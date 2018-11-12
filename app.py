@@ -9,28 +9,32 @@ app = Flask(__name__)
 # TODO: Fix validator
 # Team Form Class
 class TeamForm(Form):
-    team = StringField('Team')
+    team = StringField('Team', [validators.Length(min=1, max=25)])
 
 # Index
 @app.route('/', methods=['GET', 'POST'])
-@app.route('/team', methods=['GET', 'POST'])
+#@app.route('/team', methods=['GET', 'POST'])
 def index():
     form = TeamForm(request.form)
 
     display_tables = False
 
-    if request.method == 'POST':
-        team = form.team.data
+    if request.method == 'POST' and form.validate():
+        team = form.team
+
+        print(form.team.data)
+        print(type(form.team))
+
+        print(team.data)
+        print(type(team))
 
         display_tables = True
-
-        #return redirect(url_for('results'))
-
+        
     if display_tables:
         pass
 
 
-    return render_template('home.html')
+    return render_template('home.html', form=form)
 
 # results
 @app.route('/results', methods=['GET', 'POST'])
