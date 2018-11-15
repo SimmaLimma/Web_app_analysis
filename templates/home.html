@@ -7,14 +7,14 @@
     <form action="" method="POST">
       <div class="form-group" style="height:150px; width:150px;">
         <label>Choose team</label>
-        <input type="text" name="Team" class="form-control" value={{request.form.team}}>
+        <input type="text" name="team" class="form-control" value={{request.form.team}}>
       </div>
       <button type="submit" class="btn btn-primary">Submit</button>
     </form>
   </div>
   <div class="jumbotron text-center">
     {% if display_tables %}
-      <p>Content</p>
+      <p>{{ form.team.data }}</p>
     {% endif %}
   </div>
 {% endblock %}

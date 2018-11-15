@@ -13,28 +13,19 @@ class TeamForm(Form):
 
 # Index
 @app.route('/', methods=['GET', 'POST'])
-#@app.route('/team', methods=['GET', 'POST'])
+@app.route('/home', methods=['GET', 'POST'])
 def index():
     form = TeamForm(request.form)
 
     display_tables = False
 
     if request.method == 'POST' and form.validate():
-        team = form.team
-
-        print(form.team.data)
-        print(type(form.team))
-
-        print(team.data)
-        print(type(team))
 
         display_tables = True
-        
-    if display_tables:
-        pass
 
-
-    return render_template('home.html', form=form)
+    return render_template('home.html', 
+                            form=form, 
+                            display_tables=display_tables)
 
 # results
 @app.route('/results', methods=['GET', 'POST'])
