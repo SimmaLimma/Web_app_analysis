@@ -5,43 +5,77 @@ import matplotlib.pyplot as plt
 #TODO: Write proper input and ouput format
 #TODO: Write comments
 
-def make_team_data(df, team):
-    """
+class PL_data:
 
-    """
-    home_goals = f'{team}_goals'
+    def __init__(self):
 
-    df_home_matches = df[df['home_team'] == team]
-    df_home_matches = df_home_matches.drop(columns=['home_team'])
-    df_home_matches = df_home_matches.rename(columns={'away_team': 'team', 
-                                                'home_goals': home_goals, 
-                                                'away_goals': 'opp_goals'})
-    df_home_matches['home?'] = 'yes'
+        # All data from results.csv
+        self.data = []
 
-    df_away_matches = df[df['away_team'] == team]
-    df_away_matches = df_away_matches.drop(columns=['away_team'])
-    df_away_matches = df_away_matches.rename(columns={'home_team': 'team', 
-                                                'away_goals': home_goals, 
-                                                'home_goals': 'opp_goals'})
-    df_away_matches = df_away_matches[['team',
-                                home_goals,
-                                'opp_goals',
-                                'result',
-                                'season']]
-    df_away_matches['home?'] = 'no'
+        # The team data that has been 
+        self.team_data{}
 
 
+    def load_data(self):
+        pass
 
-    df_team = pd.concat([df_home_matches, df_away_matches])
-    df_team['goal_diff'] = df_team[home_goals] - df_team['opp_goals'] 
+    def make_team_data(self, df, team):
+        """
 
-    return df_team.sort_index()
+        """
 
-#TODO: Write proper input and output format
-def make_team_vs_team_data():
-    """
+        # TODO: Refactor so that df-search is made as 
+        #   "home_team or away_team" == team, in order to skip
+        #   unnecessery sort_index and better DRY
+        df_home_matches = df[df['home_team'] == team]
+        df_home_matches = df_home_matches.drop(columns=['home_team'])
+        df_home_matches = df_home_matches.rename(columns={'away_team': 'team', 
+                                                    'home_goals': 'made_goals', 
+                                                    'away_goals': 'conceded_goals'})
+        df_home_matches['home?'] = 'yes'
 
-    """
-    pass
+        df_away_matches = df[df['away_team'] == team]
+        df_away_matches = df_away_matches.drop(columns=['away_team'])
+        df_away_matches = df_away_matches.rename(columns={'home_team': 'team', 
+                                                    'away_goals': 'made_goals', 
+                                                    'home_goals': 'conceded_goals'})
+        df_away_matches = df_away_matches[['team',
+                                    'made_goals',
+                                    'opp_goals',
+                                    'result',
+                                    'season']]
+        df_away_matches['home?'] = 'no'
 
 
+
+        df_team = pd.concat([df_home_matches, df_away_matches])
+        df_team['goal_diff'] = df_team['made_goals'] - df_team['conceded_goals'] 
+
+        return df_team.sort_index()
+
+    #TODO: Write proper input and output format
+    def make_team_vs_team_data(self):
+        """
+
+        """
+        pass
+
+    def df2jason(self):
+        pass
+
+    def get_team_data(self):
+        """
+        
+        """
+        # TODO: Make so this returns directly from dict if exist
+        #   otherwise use make_team_data to make data
+        pass
+
+        
+    def get_team_vs_team_data(self):
+        """
+        
+        """
+        # TODO: Make so this returns directly from dict if exist
+        #   otherwise use make_team_vs_team_data to make data
+        pass
