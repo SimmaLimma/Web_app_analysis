@@ -3,6 +3,7 @@ from flask import Flask, render_template, flash, redirect, url_for, session, req
 from wtforms import Form, StringField, TextAreaField, PasswordField, validators
 #from passlib.hash import sha256_crypt
 from functools import wraps
+import pandas as pd
 
 app = Flask(__name__)
 
@@ -22,6 +23,9 @@ def index():
     if request.method == 'POST' and form.validate():
 
         display_tables = True
+
+        # Load data
+
 
     return render_template('home.html', 
                             form=form, 
