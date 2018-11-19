@@ -4,6 +4,9 @@ from wtforms import Form, StringField, TextAreaField, PasswordField, validators
 #from passlib.hash import sha256_crypt
 from functools import wraps
 import pandas as pd
+import json
+import plotly
+
 
 app = Flask(__name__)
 
@@ -24,12 +27,33 @@ def index():
 
         display_tables = True
 
-        # Load data
+    # Load data
+    # Temp data to test
+    data = [1, 2, 3, 1, 1, 1, 3, 3, 2]
+    range = pd.DataFrame
+
+    
+    graph = dict(data=[
+                dict(
+                    x=[1, 2, 3],
+                    y=[10, 20, 30],
+                    type='scatter'
+                ),
+            ],
+            layout=dict(
+                title='Goals'
+            )
+    )
+
+    graphJSON = json.dumps(graph, cls=plotly.utils.PlotlyJSONEncoder)
+        
+
 
 
     return render_template('home.html', 
                             form=form, 
-                            display_tables=display_tables)
+                            display_tables=display_tables,
+                            graphJSON=graphJSON)
 
 # results
 @app.route('/results', methods=['GET', 'POST'])

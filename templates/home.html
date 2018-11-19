@@ -14,7 +14,23 @@
   </div>
   <div class="jumbotron text-center">
     {% if display_tables %}
+      <!-- D3.js -->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.7.0/d3.js"></script>
+      <!-- jQuery -->
+      <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+      <!-- Plotly.js -->
+      <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+      
+      
       <p>{{ form.team.data }}</p>
+
+      <div id="tester" style="width:600px;height:250px;">
+        <script type="text/javascript">
+          var graph = {{graphJSON | safe}};
+          Plotly.newPlot('tester', graph.data, graph.layout);
+        </script>
+      </div>
+
     {% endif %}
   </div>
 {% endblock %}
