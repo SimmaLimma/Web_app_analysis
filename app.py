@@ -4,8 +4,10 @@ from wtforms import Form, StringField, TextAreaField, PasswordField, validators
 #from passlib.hash import sha256_crypt
 from functools import wraps
 import pandas as pd
+import numpy as np
 import json
 import plotly
+from PLFuncs import PLData
 
 
 app = Flask(__name__)
@@ -13,47 +15,56 @@ app = Flask(__name__)
 # TODO: Fix validator
 # Team Form Class
 class TeamForm(Form):
-    team = StringField('Team', [validators.Length(min=1, max=25)])
+    team = StringField('Team', [validators.Length(min=1, max=100)])
 
 # Index
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/home', methods=['GET', 'POST'])
 def index():
+
+    # TODO: Make this not load everytime. Preferably a db, I guess
+    # Load data
+    all_data = pd.read_csv('results.csv')
+
+    # Data class that stores and handles data for Premier League (PL)
+    pl_data = PLData()
+
+    # TODO: Make this "rullgardin" with options from data above
     form = TeamForm(request.form)
 
     display_tables = False
 
+    # TODO: Validate if team inputted exists
     if request.method == 'POST' and form.validate():
 
         display_tables = True
 
-    # Load data
-    # Temp data to test
-    data = [1, 2, 3, 1, 1, 1, 3, 3, 2]
-    range = pd.DataFrame
+        chosen_team_data = pl_data.make_team_data(all_data, form.team.data)
 
-    
-    graph = dict(data=[
-                dict(
-                    x=[1, 2, 3],
-                    y=[10, 20, 30],
-                    type='scatter'
-                ),
-            ],
-            layout=dict(
-                title='Goals'
-            )
-    )
+        goal_diffs = chosen_team_data.groupby('team').mean().goal_diff
 
-    graphJSON = json.dumps(graph, cls=plotly.utils.PlotlyJSONEncoder)
-        
+        graphs = dict(data=[
+                    dict(
+                        x=goal_diffs.index,
+                        y=goal_diffs,
+                        type='bar'
+                    ),
+                    ],
+                    layout=dict(
+                        title='Team name'
+                    )
+        )
 
-
+        graphJSON = json.dumps(graphs, cls=plotly.utils.PlotlyJSONEncoder)
+            
+        return render_template('home.html', 
+                                form=form, 
+                                display_tables=display_tables,
+                                graphJSON=graphJSON)
 
     return render_template('home.html', 
-                            form=form, 
-                            display_tables=display_tables,
-                            graphJSON=graphJSON)
+                        form=form, 
+                        display_tables=display_tables)
 
 # results
 @app.route('/results', methods=['GET', 'POST'])

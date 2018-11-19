@@ -5,7 +5,7 @@
     <h1>Welcome To FlaskApp</h1>
     <p class="lead">Lorem ipsum</p>
     <form action="" method="POST">
-      <div class="form-group" style="height:150px; width:150px;">
+      <div class="form-group" style="height:100px; width:150px;">
         <label>Choose team</label>
         <input type="text" name="team" class="form-control" value={{request.form.team}}>
       </div>
@@ -24,7 +24,7 @@
       
       <p>{{ form.team.data }}</p>
 
-      <div id="tester" style="width:600px;height:250px;">
+      <div id="tester" style="width:600px;height:400px;">
         <script type="text/javascript">
           var graph = {{graphJSON | safe}};
           Plotly.newPlot('tester', graph.data, graph.layout);

@@ -1,20 +1,15 @@
+# TODO: Rename file 
+
 import pandas as pd 
 import numpy as np 
-import matplotlib.pyplot as plt 
 
-#TODO: Write proper input and ouput format
-#TODO: Write comments
-
-class PL_data:
+# TODO: Make it a class
+class PLData:
 
     def __init__(self):
 
         # All data from results.csv
         self.data = []
-
-        # The team data that has been 
-        self.team_data{}
-
 
     def load_data(self):
         pass
@@ -41,7 +36,7 @@ class PL_data:
                                                     'home_goals': 'conceded_goals'})
         df_away_matches = df_away_matches[['team',
                                     'made_goals',
-                                    'opp_goals',
+                                    'conceded_goals',
                                     'result',
                                     'season']]
         df_away_matches['home?'] = 'no'
