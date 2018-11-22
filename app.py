@@ -1,6 +1,6 @@
 from flask import Flask, render_template, flash, redirect, url_for, session, request, logging
 #from flask_mysqldb import MySQL
-from wtforms import Form, StringField, TextAreaField, PasswordField, validators
+from wtforms import Form, StringField, SelectField, TextAreaField, PasswordField, validators
 #from passlib.hash import sha256_crypt
 from functools import wraps
 import pandas as pd
@@ -15,7 +15,9 @@ app = Flask(__name__)
 # TODO: Fix validator
 # Team Form Class
 class TeamForm(Form):
-    team = StringField('Team', [validators.Length(min=1, max=100)])
+    preset_choices = []
+    team = SelectField('Team', choices=preset_choices)
+    
 
 # Index
 @app.route('/', methods=['GET', 'POST'])
@@ -29,8 +31,12 @@ def index():
     # Data class that stores and handles data for Premier League (PL)
     pl_data = PLData()
 
+    choices = [('Chelsea', 'Chelsea'), ('Arsenal', 'Arsenal')]
+
     # TODO: Make this "rullgardin" with options from data above
     form = TeamForm(request.form)
+
+    form.team.choices = choices
 
     display_tables = False
 

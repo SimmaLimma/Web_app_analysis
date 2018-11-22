@@ -7,7 +7,9 @@
     <form action="" method="POST">
       <div class="form-group" style="height:100px; width:150px;">
         <label>Choose team</label>
-        <input type="text" name="team" class="form-control" value={{request.form.team}}>
+        <!--Have to make the stylish input field as drop down -->
+        <!--<input type="text" name="team" class="form-control" value={{request.form.team}}>-->
+        <div>{{ form.team }}</div>
       </div>
       <button type="submit" class="btn btn-primary">Submit</button>
     </form>
@@ -24,10 +26,10 @@
       
       <p>{{ form.team.data }}</p>
 
-      <div id="tester" style="width:600px;height:400px;">
+      <div id="plot_1" style="width:600px;height:400px;">
         <script type="text/javascript">
           var graph = {{graphJSON | safe}};
-          Plotly.newPlot('tester', graph.data, graph.layout);
+          Plotly.newPlot('plot_1', graph.data, graph.layout);
         </script>
       </div>
 
