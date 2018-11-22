@@ -6,15 +6,24 @@ import numpy as np
 # TODO: Make it a class
 class PLData:
 
-    def __init__(self):
+    data = None
+    team_data = None
+    team_name = None
+    opp_team_name = None
 
-        # All data from results.csv
-        self.data = []
+    def __init__(self, file_name):
 
-    def load_data(self):
+        # All data from file_name
+        # File needs to be csv, that is on format *.csv
+        self.data = pd.read_csv(file_name)
+
+    def choose_team(self, team_name):
         pass
 
-    def make_team_data(self, df, team):
+    def choose_opponent_team(self, team_name):
+        pass
+
+    def make_team_data(self, team_name):
         """
 
         """
@@ -22,14 +31,14 @@ class PLData:
         # TODO: Refactor so that df-search is made as 
         #   "home_team or away_team" == team, in order to skip
         #   unnecessery sort_index and better DRY
-        df_home_matches = df[df['home_team'] == team]
+        df_home_matches = self.data[self.data['home_team'] == team_name]
         df_home_matches = df_home_matches.drop(columns=['home_team'])
         df_home_matches = df_home_matches.rename(columns={'away_team': 'team', 
                                                     'home_goals': 'made_goals', 
                                                     'away_goals': 'conceded_goals'})
         df_home_matches['home?'] = 'yes'
 
-        df_away_matches = df[df['away_team'] == team]
+        df_away_matches = self.data[self.data['away_team'] == team_name]
         df_away_matches = df_away_matches.drop(columns=['away_team'])
         df_away_matches = df_away_matches.rename(columns={'home_team': 'team', 
                                                     'away_goals': 'made_goals', 
@@ -46,7 +55,22 @@ class PLData:
         df_team = pd.concat([df_home_matches, df_away_matches])
         df_team['goal_diff'] = df_team['made_goals'] - df_team['conceded_goals'] 
 
-        return df_team.sort_index()
+        self.team_name = team_name
+        self.team_data = df_team.sort_index()
+
+    def get_goal_diffs(self):
+        return self.team_data.groupby('team').mean().goal_diff
+
+    def get_team_choices(self):
+        """
+        Returns list of tuples for SelectField
+        in flask. These are the choices that the user will be
+        able to choose, and every user-presentchoice has 
+        the same name/string as in the dataframe self.team_data.
+        """
+        # Remember: Take unique teams from both home and away,
+        #   in case of a match is "missing"
+        pass
 
     #TODO: Write proper input and output format
     def make_team_vs_team_data(self):
@@ -55,22 +79,28 @@ class PLData:
         """
         pass
 
-    def df2jason(self):
+    def make_jason(self):
         pass
+
+        #return json-format-data
 
     def get_team_data(self):
         """
-        
+        Unnecessery?
         """
         # TODO: Make so this returns directly from dict if exist
         #   otherwise use make_team_data to make data
+
+        # Do I really need this function?
         pass
 
         
     def get_team_vs_team_data(self):
         """
-        
+        Unnecessery?
         """
         # TODO: Make so this returns directly from dict if exist
         #   otherwise use make_team_vs_team_data to make data
+
+        # Do I really need this function?
         pass

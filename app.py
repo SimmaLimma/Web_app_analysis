@@ -16,6 +16,7 @@ app = Flask(__name__)
 # Team Form Class
 class TeamForm(Form):
     preset_choices = []
+    # TODO: Set validator as DataRequired
     team = SelectField('Team', choices=preset_choices)
     
 
@@ -29,9 +30,11 @@ def index():
     all_data = pd.read_csv('results.csv')
 
     # Data class that stores and handles data for Premier League (PL)
-    pl_data = PLData()
+    pl_data = PLData(file_name='results.csv')
 
+    # TODO: Make choices form pl_data (unique teams)
     choices = [('Chelsea', 'Chelsea'), ('Arsenal', 'Arsenal')]
+
 
     # TODO: Make this "rullgardin" with options from data above
     form = TeamForm(request.form)
@@ -45,9 +48,10 @@ def index():
 
         display_tables = True
 
-        chosen_team_data = pl_data.make_team_data(all_data, form.team.data)
+        # TODO: Choice of team set by user
+        pl_data.make_team_data('Chelsea')
 
-        goal_diffs = chosen_team_data.groupby('team').mean().goal_diff
+        goal_diffs = pl_data.get_goal_diffs()
 
         graphs = dict(data=[
                     dict(
@@ -67,7 +71,8 @@ def index():
                                 form=form, 
                                 display_tables=display_tables,
                                 graphJSON=graphJSON)
-
+        
+        print('Worked')
     return render_template('home.html', 
                         form=form, 
                         display_tables=display_tables)
