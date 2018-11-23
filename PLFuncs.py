@@ -67,10 +67,23 @@ class PLData:
         in flask. These are the choices that the user will be
         able to choose, and every user-presentchoice has 
         the same name/string as in the dataframe self.team_data.
+
+        Returns list of tuples, e.g. [('team_1', 'team_1'), ('team_2','team_2'), ...]
         """
         # Remember: Take unique teams from both home and away,
         #   in case of a match is "missing"
-        pass
+
+        home_teams = self.data['home_team'].unique()
+        away_teams = self.data['home_team'].unique()
+        all_teams = np.concatenate((home_teams, away_teams))
+        all_teams = np.unique(all_teams)
+        
+        choices = []
+        for team in all_teams:
+            choices.append((team, team))
+        
+        return choices
+
 
     #TODO: Write proper input and output format
     def make_team_vs_team_data(self):
