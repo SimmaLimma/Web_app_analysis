@@ -24,10 +24,8 @@ class TeamForm(Form):
 def index():
 
     # TODO: Make this db with SQL gets instead
-    # Load data
-    all_data = pd.read_csv('results.csv')
-
     # Data class that stores and handles data for Premier League (PL)
+    #   Init and loads data
     pl_data = PLData(file_name='results.csv')
 
     choices = pl_data.get_team_choices()
@@ -62,6 +60,8 @@ def index():
 
         graphJSON = json.dumps(graphs, cls=plotly.utils.PlotlyJSONEncoder)
             
+        # TODO: Scatter plot for goals vs concated goals
+        
         return render_template('home.html', 
                                 form=form, 
                                 display_tables=display_tables,
@@ -71,17 +71,6 @@ def index():
                         form=form, 
                         display_tables=display_tables)
 
-# results
-@app.route('/results', methods=['GET', 'POST'])
-def results():
-
-    return render_template('results.html')
-
-
-# About
-@app.route('/about')
-def about():
-    return render_template('about.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
