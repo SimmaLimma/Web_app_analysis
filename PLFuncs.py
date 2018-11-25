@@ -6,8 +6,11 @@ import numpy as np
 # TODO: Make it a class
 class PLData:
 
-    data = None
+    # Pandas dataframes
+    data = None 
     team_data = None
+
+    # Strings 
     team_name = None
     opp_team_name = None
 
@@ -17,9 +20,12 @@ class PLData:
         # File needs to be csv, that is on format *.csv
         self.data = pd.read_csv(file_name)
 
+    # Make so that this constructs team_data. Makes more sense
     def choose_team(self, team_name):
         pass
 
+    # Remember: Make sure to get error when this is used without team specified
+    # Or just make it so that it is impossible to input anything else
     def choose_opponent_team(self, team_name):
         pass
 
@@ -70,8 +76,6 @@ class PLData:
 
         Returns list of tuples, e.g. [('team_1', 'team_1'), ('team_2','team_2'), ...]
         """
-        # Remember: Take unique teams from both home and away,
-        #   in case of a match is "missing"
 
         home_teams = self.data['home_team'].unique()
         away_teams = self.data['home_team'].unique()
@@ -86,34 +90,33 @@ class PLData:
 
 
     #TODO: Write proper input and output format
-    def make_team_vs_team_data(self):
+    # As for now, this just overwrites exisiting data.
+    # Might change when data is stored in db instead 
+    def make_team_vs_team_data(self, opponent_name):
         """
 
         """
-        pass
+        if self.team_name:
+            self.opp_team_name = opponent_name
 
-    def make_jason(self):
-        pass
+            # TODO: Too long line according to PEP
+            self.team_data = self.team_data[self.team_data['team'] == opponent_name]
 
-        #return json-format-data
-
-    def get_team_data(self):
-        """
-        Unnecessery?
-        """
-        # TODO: Make so this returns directly from dict if exist
-        #   otherwise use make_team_data to make data
-
-        # Do I really need this function?
-        pass
 
         
-    def get_team_vs_team_data(self):
-        """
-        Unnecessery?
-        """
-        # TODO: Make so this returns directly from dict if exist
-        #   otherwise use make_team_vs_team_data to make data
 
-        # Do I really need this function?
-        pass
+    def get_scatter_goal_data(self, bubble_size = 5):
+        """
+        Returns data for scatter plot of goals made vs goals 
+        """
+
+        df_pairs = self.team_data.groupby(['made_goals', 'conceded_goals']).size()
+        y = df_pairs.index.labels[0].values()
+        x = df_pairs.index.labels[1].values()
+        freq = df_pairs.values
+        bubble_sizes = (bubble_size*freq/freq.max()) ** 2
+
+        return pd.DataFrame({'x':x, 'y': y, 'bubble_sizes':bubble_sizes})
+        
+
+        

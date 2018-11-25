@@ -30,46 +30,61 @@ def index():
 
     choices = pl_data.get_team_choices()
 
+    # TODO: Make so that if user only specifies one team: use make_team_data
+    # Is user specifies team and opponent team, use make_team_vs_team_data
     form = TeamForm(request.form)
 
     form.team.choices = choices
 
-    display_tables = False
-
-    # TODO: Validate if team inputted exists
     if request.method == 'POST' and form.validate():
-
-        display_tables = True
 
         pl_data.make_team_data(form.team.data)
 
-
         goal_diffs = pl_data.get_goal_diffs()
 
-        graphs = dict(data=[
+        scatter_data = pl_data.get_scatter_goal_data()
+
+        graphs = [
+            dict(
+                data=[
                     dict(
                         x=goal_diffs.index,
                         y=goal_diffs,
                         type='bar'
                     ),
-                    ],
-                    layout=dict(
-                        title='Team name'
-                    )
-        )
+                ],
+                layout=dict(
+                    title=form.team.data
+                )
+            ), 
+            dict(
+                data=[
+                    dict(
+                        x=scatter_data.x,
+                        y=scatter_data.y,
+                        type='scatter',                        
+                        mode='markers',
+                        marker=dict(
+                            size=scatter_data.bubble_sizes
+                        )
+                    ),
+                ],
+                layout=dict(
+                    title=form.team.data
+                )
+            )
+        ]
 
         graphJSON = json.dumps(graphs, cls=plotly.utils.PlotlyJSONEncoder)
-            
-        # TODO: Scatter plot for goals vs concated goals
-        
+
         return render_template('home.html', 
                                 form=form, 
-                                display_tables=display_tables,
+                                display_tables=True,
                                 graphJSON=graphJSON)
         
     return render_template('home.html', 
                         form=form, 
-                        display_tables=display_tables)
+                        display_tables=False)
 
 
 if __name__ == '__main__':

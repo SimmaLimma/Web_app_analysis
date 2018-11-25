@@ -29,7 +29,17 @@
       <div id="plot_1" style="width:600px;height:400px;">
         <script type="text/javascript">
           var graph = {{graphJSON | safe}};
-          Plotly.newPlot('plot_1', graph.data, graph.layout);
+          Plotly.plot('plot_1', graph[0].data, graph[0].layout);
+          Plotly.plot('plot_2', graph[1].data, graph[1].layout);
+        </script>
+      </div>
+
+      <br/>
+
+      <div id="plot_2" style="width:600px;height:400px;">
+        <script type="text/javascript">
+          var graph = {{graphJSON | safe}};
+          Plotly.plot('plot_2', graph[1].data, graph[1].layout);
         </script>
       </div>
 
