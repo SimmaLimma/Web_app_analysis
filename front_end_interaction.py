@@ -58,4 +58,6 @@ def data_to_graph_json(goal_diffs, goals_on_matches):
         )
     ]
 
+    # Makes it to json format before returning, so it is possible to send it
+    #   directly to front end
     return json.dumps(graphs, cls=plotly.utils.PlotlyJSONEncoder)

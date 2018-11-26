@@ -1,9 +1,7 @@
-# TODO: Rename file 
-
 import pandas as pd 
 import numpy as np 
 
-# TODO: Make it a class
+
 class PLData:
 
     # Pandas dataframes
@@ -14,20 +12,13 @@ class PLData:
     team_name = None
     opp_team_name = None
 
+
     def __init__(self, file_name):
 
         # All data from file_name
         # File needs to be csv, that is on format *.csv
         self.data = pd.read_csv(file_name)
 
-    # Make so that this constructs team_data. Makes more sense
-    def choose_team(self, team_name):
-        pass
-
-    # Remember: Make sure to get error when this is used without team specified
-    # Or just make it so that it is impossible to input anything else
-    def choose_opponent_team(self, team_name):
-        pass
 
     def make_team_data(self, team_name):
         """
@@ -61,11 +52,57 @@ class PLData:
         df_team = pd.concat([df_home_matches, df_away_matches])
         df_team['goal_diff'] = df_team['made_goals'] - df_team['conceded_goals'] 
 
-        self.team_name = team_name
         self.team_data = df_team.sort_index()
+
+
+    # Make so that this constructs team_data. Makes more sense
+    def choose_team(self, team_name):
+        self.team_name = team_name
+        self.make_team_data(team_name)
+
 
     def get_goal_diffs(self):
         return self.team_data.groupby('team').mean().goal_diff
+
+
+    # As for now, this just overwrites exisiting data.
+    # Might change when data is stored in db instead 
+    # TODO: Make so this does not create make_team_data
+    #   if not needed 
+    def make_team_vs_team_data(self, opponent_name):
+        """
+
+        """
+
+        self.team_data = self.team_data[self.team_data['team'] == opponent_name]
+
+
+    def choose_opponent_team(self, opponent_name):
+
+        if self.team_name:
+            self.opp_team_name = opponent_name
+
+            # If user does not want to compare to an opponent team 
+            #   then team_data should be for all opponent teams possible
+            if opponent_name == 'No team':
+                self.make_team_data(self.team_name)
+            else:
+                self.make_team_vs_team_data(opponent_name)
+
+
+    def get_scatter_goal_data(self, bubble_size = 5):
+        """
+        Returns data for scatter plot of goals made vs goals 
+        """
+
+        df_pairs = self.team_data.groupby(['made_goals', 'conceded_goals']).size()
+        y = df_pairs.index.labels[0].values()
+        x = df_pairs.index.labels[1].values()
+        freq = df_pairs.values
+        bubble_sizes = (bubble_size*freq/freq.max()) ** 2
+
+        return pd.DataFrame({'x':x, 'y': y, 'bubble_sizes':bubble_sizes})
+
 
     def get_team_choices(self):
         """
@@ -90,6 +127,7 @@ class PLData:
         
         return choices
 
+
     def get_opp_team_choices(self):
         """
         Get choices for opponent team
@@ -103,42 +141,6 @@ class PLData:
 
         return choices
         
-
-    # As for now, this just overwrites exisiting data.
-    # Might change when data is stored in db instead 
-    # TODO: Make so this does not create make_team_data
-    #   if not needed 
-    def make_team_vs_team_data(self, opponent_name):
-        """
-
-        """
-        if self.team_name:
-            self.opp_team_name = opponent_name
-
-            # If user does not want to compare to an opponent team 
-            #   then team_data should be for all opponent teams possible
-            if opponent_name == 'No team':
-                self.make_team_data(self.team_name)
-                return
-
-            # TODO: Too long line according to PEP
-            self.team_data = self.team_data[self.team_data['team'] == opponent_name]
-
-
-        
-
-    def get_scatter_goal_data(self, bubble_size = 5):
-        """
-        Returns data for scatter plot of goals made vs goals 
-        """
-
-        df_pairs = self.team_data.groupby(['made_goals', 'conceded_goals']).size()
-        y = df_pairs.index.labels[0].values()
-        x = df_pairs.index.labels[1].values()
-        freq = df_pairs.values
-        bubble_sizes = (bubble_size*freq/freq.max()) ** 2
-
-        return pd.DataFrame({'x':x, 'y': y, 'bubble_sizes':bubble_sizes})
         
 
         
