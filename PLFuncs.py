@@ -96,7 +96,7 @@ class PLData:
         """
         opp_teams = self.team_data['team'].unique()
 
-        choices = [(None, 'No team')]
+        choices = [('No team', 'No team')]
 
         for team in opp_teams:
             choices.append((team, team))
@@ -104,9 +104,10 @@ class PLData:
         return choices
         
 
-    #TODO: Write proper input and output format
     # As for now, this just overwrites exisiting data.
     # Might change when data is stored in db instead 
+    # TODO: Make so this does not create make_team_data
+    #   if not needed 
     def make_team_vs_team_data(self, opponent_name):
         """
 
@@ -116,7 +117,7 @@ class PLData:
 
             # If user does not want to compare to an opponent team 
             #   then team_data should be for all opponent teams possible
-            if opponent_name is None:
+            if opponent_name == 'No team':
                 self.make_team_data(self.team_name)
                 return
 

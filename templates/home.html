@@ -10,41 +10,8 @@
         <!--Have to make the stylish input field as drop down -->
         <!--<input type="text" name="team" class="form-control" value={{request.form.team}}>-->
         <div>{{ form.team }}</div>
-        <br/>
-        <div>{{ form.opp_team }}</div>
       </div>
       <button type="submit" class="btn btn-primary">Submit</button>
     </form>
   </div>
-  <div class="jumbotron text-center">
-    {% if display_tables %}
-      <!-- D3.js -->
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.7.0/d3.js"></script>
-      <!-- jQuery -->
-      <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
-      <!-- Plotly.js -->
-      <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-      
-      
-      <p>{{ form.team.data }}</p>
-
-      <div id="plot_1" style="width:600px;height:400px;">
-        <script type="text/javascript">
-          var graph = {{graphJSON | safe}};
-          Plotly.plot('plot_1', graph[0].data, graph[0].layout);
-          Plotly.plot('plot_2', graph[1].data, graph[1].layout);
-        </script>
-      </div>
-
-      <br/>
-
-      <div id="plot_2" style="width:600px;height:400px;">
-        <script type="text/javascript">
-          var graph = {{graphJSON | safe}};
-          Plotly.plot('plot_2', graph[1].data, graph[1].layout);
-        </script>
-      </div>
-
-    {% endif %}
-  </div>
-{% endblock %}
+  {% endblock %}

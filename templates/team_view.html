@@ -6,12 +6,10 @@
     <p class="lead">Lorem ipsum</p>
     <form action="" method="POST">
       <div class="form-group" style="height:100px; width:150px;">
-        <label>Choose team</label>
+        <label>Choose opponent team</label>
         <!--Have to make the stylish input field as drop down -->
         <!--<input type="text" name="team" class="form-control" value={{request.form.team}}>-->
-        <div>{{ form.team }}</div>
-        <br/>
-        <div>{{ form.opp_team }}</div>
+        <div> {{ form.team }}</div>    
       </div>
       <button type="submit" class="btn btn-primary">Submit</button>
     </form>
@@ -26,13 +24,13 @@
       <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
       
       
-      <p>{{ form.team.data }}</p>
+      <p>{{ team }} vs {{ form.team.data }}</p>
 
+      <!-- TODO: graphJSON load twice now, unnecessery-->
       <div id="plot_1" style="width:600px;height:400px;">
         <script type="text/javascript">
           var graph = {{graphJSON | safe}};
           Plotly.plot('plot_1', graph[0].data, graph[0].layout);
-          Plotly.plot('plot_2', graph[1].data, graph[1].layout);
         </script>
       </div>
 
