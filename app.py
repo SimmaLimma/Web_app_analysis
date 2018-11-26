@@ -17,6 +17,11 @@ class TeamForm(Form):
     # TODO: Set validator as DataRequired
     team = SelectField('Team', choices=preset_choices)
     
+class OppTeamForm(Form):
+    preset_choices_opp = [(None, 'No teams found')]
+    opp_team = SelectField('Opponent team', choices=preset_choices_opp)
+    
+
 
 # Index
 @app.route('/', methods=['GET', 'POST'])
@@ -28,22 +33,29 @@ def index():
     #   Init and loads data
     pl_data = PLData(file_name='results.csv')
 
-    choices = pl_data.get_team_choices()
-
     # TODO: Make so that if user only specifies one team: use make_team_data
     # Is user specifies team and opponent team, use make_team_vs_team_data
     form = TeamForm(request.form)
 
-    form.team.choices = choices
+    form.team.choices = pl_data.get_team_choices()
 
-    if request.method == 'POST' and form.validate():
+    if request.method == 'POST': #and form.validate():
 
         pl_data.make_team_data(form.team.data)
+
+        # TODO: When choosing new team, make opp_team reset (including is the UI)
+        form.opp_team.choices = pl_data.get_opp_team_choices()
+
+        # Does not do anything if no opponent team inputted,
+        #   i.e. form.opp_team.data is None
+        pl_data.make_team_vs_team_data(form.opp_team.data)
 
         goal_diffs = pl_data.get_goal_diffs()
 
         scatter_data = pl_data.get_scatter_goal_data()
 
+        # TODO: Make fields for goals_diffs to .x and .y
+        #   so it is same format as scatter_data
         graphs = [
             dict(
                 data=[

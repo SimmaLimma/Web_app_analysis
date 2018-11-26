@@ -75,6 +75,8 @@ class PLData:
         the same name/string as in the dataframe self.team_data.
 
         Returns list of tuples, e.g. [('team_1', 'team_1'), ('team_2','team_2'), ...]
+        were first item in each tuple is what back-end recieves as answer,
+        and the second is what the user sees
         """
 
         home_teams = self.data['home_team'].unique()
@@ -88,6 +90,19 @@ class PLData:
         
         return choices
 
+    def get_opp_team_choices(self):
+        """
+        Get choices for opponent team
+        """
+        opp_teams = self.team_data['team'].unique()
+
+        choices = [(None, 'No team')]
+
+        for team in opp_teams:
+            choices.append((team, team))
+
+        return choices
+        
 
     #TODO: Write proper input and output format
     # As for now, this just overwrites exisiting data.
@@ -98,6 +113,12 @@ class PLData:
         """
         if self.team_name:
             self.opp_team_name = opponent_name
+
+            # If user does not want to compare to an opponent team 
+            #   then team_data should be for all opponent teams possible
+            if opponent_name is None:
+                self.make_team_data(self.team_name)
+                return
 
             # TODO: Too long line according to PEP
             self.team_data = self.team_data[self.team_data['team'] == opponent_name]
