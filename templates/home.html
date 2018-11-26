@@ -2,16 +2,22 @@
 
 {% block body %}
   <div class="jumbotron text-center">
-    <h1>Welcome To FlaskApp</h1>
-    <p class="lead">Lorem ipsum</p>
+    <h1>Premier league stats</h1>
+    <p class="lead">Web app for checking some stats for premier league.</p>
+    <br/>
+    <p class="lead">Data comes from data set with results of matches from season 2006/2007 to 2016/2017 </p>
+    <br/>
+    <!--Placement of form (below) might be worst div design ever-->
     <form action="" method="POST">
-      <div class="form-group" style="height:100px; width:150px;">
+      <div class="form-group" style="height:100px; width:100px;">
         <label>Choose team</label>
         <!--Have to make the stylish input field as drop down -->
         <!--<input type="text" name="team" class="form-control" value={{request.form.team}}>-->
         <div>{{ form.team }}</div>
       </div>
+      <div class="pull-left">
       <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
     </form>
   </div>
   {% endblock %}

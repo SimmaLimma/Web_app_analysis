@@ -6,6 +6,7 @@ import numpy as np
 import json
 import plotly
 from PLFuncs import PLData
+from front_end_interaction import data_to_graph_json
 
 
 app = Flask(__name__)
@@ -103,6 +104,7 @@ def team_view():
         ]
 
         graphJSON = json.dumps(graphs, cls=plotly.utils.PlotlyJSONEncoder)
+        graphJSON = data_to_graph_json(goal_diffs, goals_on_matches)
 
         return render_template('team_view.html', 
                                 form=form, 

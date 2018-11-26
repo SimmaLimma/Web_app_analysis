@@ -2,8 +2,12 @@
 
 {% block body %}
   <div class="jumbotron text-center">
-    <h1>Welcome To FlaskApp</h1>
-    <p class="lead">Lorem ipsum</p>
+    <h1>Premier league stats</h1>
+    <p class="lead">Web app for checking some stats for premier league.</p>
+    <br/>
+    <p class="lead">Data comes from data set with results of matches from season 2006/2007 to 2016/2017 </p>
+    <br/>
+    <!--Placement of form (below) might be worst div design ever-->
     <form action="" method="POST">
       <div class="form-group" style="height:100px; width:150px;">
         <label>Choose opponent team</label>
@@ -11,7 +15,9 @@
         <!--<input type="text" name="team" class="form-control" value={{request.form.team}}>-->
         <div> {{ form.team }}</div>    
       </div>
-      <button type="submit" class="btn btn-primary">Submit</button>
+      <div class="pull-left">
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </div>
     </form>
   </div>
   <div class="jumbotron text-center">
@@ -23,10 +29,14 @@
       <!-- Plotly.js -->
       <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
       
-      
-      <p>{{ team }} vs {{ form.team.data }}</p>
-
+      {% if  form.team.data == 'No team'%}
+        <p>{{ team }} </p>
+      {% else %}
+        <p>{{ team }} vs {{ form.team.data }}</p>
+      {% endif %}
       <!-- TODO: graphJSON load twice now, unnecessery-->
+      <!-- TODO: Make bar graph for mean goal diff look nice
+      when only looking at one team. Looks like one big, blue rectangle now-->
 
       <!-- Bar graph of goal differences -->
       <div id="plot_1" style="width:600px;height:400px;">

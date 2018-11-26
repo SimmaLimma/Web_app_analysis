@@ -1,4 +1,5 @@
 import json
+import plotly
 
 def data_to_graph_json(goal_diffs, goals_on_matches):
     """
@@ -24,10 +25,10 @@ def data_to_graph_json(goal_diffs, goals_on_matches):
                 ),
             ],
             layout=dict(
-                title='Goal differences'
+                title='Goal differences',
                 yaxis=dict(
                     title='Mean goal difference'
-                )
+                ),
                 xaxis=dict(
                     title='Team(s)'
                 )
@@ -46,10 +47,10 @@ def data_to_graph_json(goal_diffs, goals_on_matches):
                 ),
             ],
             layout=dict(
-                title='Amount of matches with specific result.'
+                title='Amount of matches with specific result.',
                 yaxis=dict(
                     title='Made goals'
-                )
+                ),
                 xaxis=dict(
                     title='Conceded goals'
                 )
