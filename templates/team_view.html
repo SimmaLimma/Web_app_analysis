@@ -27,6 +27,8 @@
       <p>{{ team }} vs {{ form.team.data }}</p>
 
       <!-- TODO: graphJSON load twice now, unnecessery-->
+
+      <!-- Bar graph of goal differences -->
       <div id="plot_1" style="width:600px;height:400px;">
         <script type="text/javascript">
           var graph = {{graphJSON | safe}};
@@ -36,6 +38,7 @@
 
       <br/>
 
+      <!-- Bubble chart plot of amount of matches played with a specific result -->
       <div id="plot_2" style="width:600px;height:400px;">
         <script type="text/javascript">
           var graph = {{graphJSON | safe}};

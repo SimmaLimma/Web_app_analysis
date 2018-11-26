@@ -67,7 +67,7 @@ def team_view():
 
         goal_diffs = pl_data.get_goal_diffs()
 
-        scatter_data = pl_data.get_scatter_goal_data()
+        goals_on_matches = pl_data.get_scatter_goal_data()
 
         # TODO: Make fields for goals_diffs to .x and .y
         #   so it is same format as scatter_data
@@ -87,12 +87,12 @@ def team_view():
             dict(
                 data=[
                     dict(
-                        x=scatter_data.x,
-                        y=scatter_data.y,
+                        x=goals_on_matches.x,
+                        y=goals_on_matches.y,
                         type='scatter',                        
                         mode='markers',
                         marker=dict(
-                            size=scatter_data.bubble_sizes
+                            size=goals_on_matches.bubble_sizes
                         )
                     ),
                 ],
